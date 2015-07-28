@@ -1,18 +1,37 @@
 <html>
 	<head>
-		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0 minimum-scale=1.0">
 		<title>Flickr Search</title>
 		<link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css"/>
-		<link rel="stylesheet" href="bower_components/angular-material/themes/blue-theme.css"/>
 		<link rel="stylesheet" href="style.css"/>
 		<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'/>
 	</head>
-	<body ng-app="flikrApp" ng-controller="ListController" layout="column" layout-align="top center">
+	<body ng-app="flikrApp" ng-controller="ListController as list" layout="column" layout-align="top center">
 		<md-toolbar>
 			<div class="md-toolbar-tools">
 				<span class="md-flex">Flikr Search</span>
 			</div>
 		</md-toolbar>
+
+
+		<md-content layout="column" layout-align="center center">
+			<div class="app-content">
+				<form ng-show="!list.isSearching" ng-submit="list.search()">
+					<md-input-container class="long">
+          				<label>Search for</label>
+          				<input ng-model="list.searchTerm">
+        			</md-input-container>
+				</form>
+				<md-progress-circular ng-if="list.isSearching" md-mode="indeterminate"></md-progress-circular>
+
+				<md-card ng-repeat='picture in list.results.photos.photo'>
+					<img ng-src="https://farm{{picture.farm}}.staticflickr.com/{{picture.server}}/{{picture.id}}_{{picture.secret}}_m" alt="" class="md-card-image"/>
+						<md-card-content>
+							<h3>{{ picture.title }}</h3>
+						</md-card-content>
+				</md-card>
+			</div>
+		</md-content>
 
 		<script src="bower_components/angular/angular.min.js"></script>
 		<script src="bower_components/angular-aria/angular-aria.min.js"></script>
